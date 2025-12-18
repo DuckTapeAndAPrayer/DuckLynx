@@ -1,7 +1,7 @@
 /firmware/.cache/
 /firmware/build/
-/firmware_updater/.cache/
-/firmware_updater/build/
+/DuckUpdate/.cache/
+/DuckUpdate/build/
 
 /.git.old/
 /firmware/src/inc/

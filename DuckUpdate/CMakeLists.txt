@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.10)
-project(firmwareUpdater)
+project(duckupdate)
 enable_language(C)
 
 #Settings

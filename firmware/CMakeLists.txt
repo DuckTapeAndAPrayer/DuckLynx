@@ -14,6 +14,7 @@ endif()
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
+# FIX: Make DuckLynx Firmware build on platforms other than arch linux
 set(CMAKE_C_FLAGS  "${CMAKE_C_FLAGS} -isystem /usr/lib/gcc/arm-none-eabi/14.2.0/include -isystem /usr/lib/gcc/arm-none-eabi/14.2.0/include-fixed -isystem /usr/arm-none-eabi/include/ -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -ffunction-sections -fdata-sections -nostartfiles -Wall -Wpedantic -Werror=return-type")
 
 # Define a variable containing a list of source files for the project

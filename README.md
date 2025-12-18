@@ -10,3 +10,6 @@ This is a replacement firmware for the Lynx HIB. It is NOT legal for competition
 
 ### Info
 This folder contains info and documentation about the Lynx in general.
+
+### DuckUpdate
+This folder contains a utility to flash the firmware of Lynx HIBs
