@@ -1,9 +1,12 @@
 /firmware/.cache/
 /firmware/build/
+/firmware_updater/.cache/
+/firmware_updater/build/
+
 /.git.old/
 /firmware/src/inc/
 /firmware/src/driverlib
-/copyrighted info/
+/copyrighted and hidden info/
 /pcb/pcb-backups/
 /firmware/openocd\ configs
 /info/parts in schematic.xcf

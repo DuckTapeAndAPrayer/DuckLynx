@@ -146,8 +146,6 @@ Only ever a reply
 255 = "Packet Type ID unknown (protocol failure; no unknown commands should be sent if discovery was performed properly)"
 ```
 
-<!-- ADD: list of NACK codes -->
-
 ### GET_MODULE_STATUS = 0x7f03
 Gets the status of a module.
 #### Payload 
@@ -445,6 +443,8 @@ Gets the version of the hub
 ### I2C_TRANSACTION = 0x36
 ### I2C_QUERY_TRANSACTION = 0x37
 ### SET_BULK_OUTPUT_DATA = 0x38
-### READ_VERSION = 0x39
 
+
+### READ_VERSION = 0x39
+Gets the version of a hub software in a binary format. Unsupported on the stock Lynx FW <!-- TEST: is it actually unsupported? -->
 

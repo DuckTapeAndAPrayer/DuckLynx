@@ -244,7 +244,6 @@ void sendNACK(RHSP_NACK nackCode) {
     sendPacket();
 }
 
-//ADD: Checks for all the rest of the statuses and motor alerts
 volatile RHSP_MODULE_STATUS rhsp_moduleStatus = RHSP_MODULE_STATUS_DEVICE_RESET;
 uint8_t motorAlerts = 0;
 
@@ -265,7 +264,6 @@ volatile uint32_t rhsp_lastCommandTime = UINT32_MAX;
 
 uint8_t phoneChargingEnabled = 0;
 
-//FIX: Make sure that all packet length checks are in place and use equals where possible
 RHSP_PARSE_RESULT handlePacket(void) {
     debugUART_printString("Packet received: ");
     printBuffer();
@@ -291,6 +289,7 @@ RHSP_PARSE_RESULT handlePacket(void) {
 
     packet->decoded.packetSize -= RHSP_PACKET_MIN_SIZE;
 
+    //FIX: Replace this massive switch statement with an array of commands. In the array have the index be the index into the command interface. Have a function pointer and an expected length of payload
     switch(packet->decoded.command) {
     //
     // Common RHSP Commands
@@ -340,14 +339,18 @@ RHSP_PARSE_RESULT handlePacket(void) {
         break;
 
     case RHSP_COMMAND_GET_MODULE_LED_COLOR:
+        if(packet->decoded.packetSize != 0) {
+            sendNACK(RHSP_NACK_PARAM_0_WRONG);
+            return RHSP_PARSE_RESULT_INVALID_PAYLOAD;
+        }
+
         packet->decoded.packetSize = 3;
         led_getColor(&packet->decoded.payload[0], &packet->decoded.payload[1], &packet->decoded.payload[2]);
         sendReadPacket();
         break;
 
     case RHSP_COMMAND_SET_MODULE_LED_PATTERN:
-        //ADD: Packet length check to make sure that the pattern packet is not too short or long
-        if(packet->decoded.packetSize % sizeof(led_PatternStep) != 0) {
+        if(packet->decoded.packetSize % sizeof(led_PatternStep) != 0 & packet->decoded.packetSize < (sizeof(led_PatternStep) * LED_MAX_PATTERN_STEPS)) {
             sendNACK(RHSP_NACK_PARAM_0_WRONG);
         }
 
@@ -365,8 +368,7 @@ RHSP_PARSE_RESULT handlePacket(void) {
 
         led_userPattern.totalSteps = i;
         led_setupPattern(LED_MODE_USER, &led_userPattern);
-
-        led_dumpPattern();
+        // led_dumpPattern();
 
         sendACK();
         break;
@@ -376,6 +378,11 @@ RHSP_PARSE_RESULT handlePacket(void) {
         break;
 
     case RHSP_COMMAND_FAIL_SAFE:
+        if(packet->decoded.packetSize != 0) {
+            sendNACK(RHSP_NACK_PARAM_0_WRONG);
+            return RHSP_PARSE_RESULT_INVALID_PAYLOAD;
+        }
+
         failsafe();
         sendACK();
         break;
@@ -419,7 +426,6 @@ RHSP_PARSE_RESULT handlePacket(void) {
         break;
 
     case RHSP_COMMAND_SET_NEW_MODULE_ADDRESS:
-        
         if(packet->decoded.packetSize != 1) {
             sendNACK(RHSP_NACK_PARAM_0_WRONG);
             return RHSP_PARSE_RESULT_INVALID_PAYLOAD;
@@ -463,6 +469,11 @@ RHSP_PARSE_RESULT handlePacket(void) {
         break;
 
     case RHSP_COMMAND_DEKA_READ_VERSION_STRING:
+        if(packet->decoded.packetSize != 3) {
+            sendNACK(RHSP_NACK_PARAM_0_WRONG);
+            return RHSP_PARSE_RESULT_INVALID_PAYLOAD;
+        }
+
         packet->decoded.packetSize = versionStringLength + 1;
         packet->decoded.payload[0] = versionStringLength;
 
@@ -658,12 +669,6 @@ RHSP_PARSE_RESULT handlePacket(void) {
         sendReadPacket();
         break;
 
-    case RHSP_COMMAND_DEKA_SET_MOTOR_TARGET_VELOCITY:
-    case RHSP_COMMAND_DEKA_GET_MOTOR_TARGET_VELOCITY:
-    case RHSP_COMMAND_DEKA_SET_MOTOR_TARGET_POSITION:
-    case RHSP_COMMAND_DEKA_GET_MOTOR_TARGET_POSITION:
-    case RHSP_COMMAND_DEKA_IS_MOTOR_AT_TARGET:
-    
     case RHSP_COMMAND_DEKA_SET_SERVO_CONFIGURATION:
     case RHSP_COMMAND_DEKA_GET_SERVO_CONFIGURATION:
     case RHSP_COMMAND_DEKA_SET_SERVO_PULSE_WIDTH:
@@ -681,6 +686,11 @@ RHSP_PARSE_RESULT handlePacket(void) {
     case RHSP_COMMAND_DEKA_GET_SINGLE_DIO_INPUT:
     case RHSP_COMMAND_DEKA_GET_ALL_DIO_INPUTS:
 
+    case RHSP_COMMAND_DEKA_SET_MOTOR_TARGET_VELOCITY:
+    case RHSP_COMMAND_DEKA_GET_MOTOR_TARGET_VELOCITY:
+    case RHSP_COMMAND_DEKA_SET_MOTOR_TARGET_POSITION:
+    case RHSP_COMMAND_DEKA_GET_MOTOR_TARGET_POSITION:
+    case RHSP_COMMAND_DEKA_IS_MOTOR_AT_TARGET:
     case RHSP_COMMAND_DEKA_SET_MOTOR_CHANNEL_CURRENT_ALERT_LEVEL:
     case RHSP_COMMAND_DEKA_GET_MOTOR_CHANNEL_CURRENT_ALERT_LEVEL:
     case RHSP_COMMAND_DEKA_SET_MOTOR_PID_CONTROL_LOOP_COEFFICIENTS:
@@ -817,7 +827,6 @@ void rhsp_tick(uint8_t * location, uint16_t count) {
             parseLoc = 0;
 
             if(result < 0) {
-                
                 rhspUART_receive(rawBuffer, RHSP_PACKET_MIN_SIZE);
             }
 

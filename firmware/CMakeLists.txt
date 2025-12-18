@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.10)
 set(CMAKE_TRY_COMPILE_TARGET_TYPE "STATIC_LIBRARY")
 set(CMAKE_TOOLCHAIN_FILE armnative.cmake)
 
-project(expansionHubFW LANGUAGES C)
+project(DuckLynxFW LANGUAGES C)
 set(CMAKE_C_STANDARD 23)
 # set(CMAKE_BUILD_TYPE Release)
 set(CMAKE_BUILD_TYPE MinSizeRel)
@@ -14,7 +14,7 @@ endif()
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-set(CMAKE_C_FLAGS  "${CMAKE_C_FLAGS} -isystem /usr/lib/gcc/arm-none-eabi/14.2.0/include -isystem /usr/lib/gcc/arm-none-eabi/14.2.0/include-fixed -isystem /usr/arm-none-eabi/include/ -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -ffunction-sections -fdata-sections -nostartfiles -Wall -Wpedantic -Werror=return-type -DPART_TM4C123GH6PGE -DTARGET_IS_TM4C123_RB1 -Dgcc")
+set(CMAKE_C_FLAGS  "${CMAKE_C_FLAGS} -isystem /usr/lib/gcc/arm-none-eabi/14.2.0/include -isystem /usr/lib/gcc/arm-none-eabi/14.2.0/include-fixed -isystem /usr/arm-none-eabi/include/ -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -ffunction-sections -fdata-sections -nostartfiles -Wall -Wpedantic -Werror=return-type")
 
 # Define a variable containing a list of source files for the project
 set(SRC_FILES

@@ -72,7 +72,6 @@ const uint32_t REGISTER_DMA_DMACHMAP1_CHANNEL_9_UART_0_TX = 0 << REGISTER_DMA_DM
 uint8_t rawBuffer[RHSP_BUFFER_SIZE];
 uint8_t * rawBufferEnd = rawBuffer + RHSP_BUFFER_SIZE;
 
-//FIX: Move these over into rhsp_tick()
 uint16_t lastReceiveSize = 0;
 uint8_t * lastReceiveLocation = 0;
 void rhspUART_receive(uint8_t * dest, uint16_t length) {
