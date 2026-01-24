@@ -469,6 +469,7 @@ RHSP_PARSE_RESULT handlePacket(void) {
         break;
 
     case RHSP_COMMAND_DEKA_READ_VERSION_STRING:
+    //FIX: Read version string gets naked
         if(packet->decoded.packetSize != 3) {
             sendNACK(RHSP_NACK_PARAM_0_WRONG);
             return RHSP_PARSE_RESULT_INVALID_PAYLOAD;

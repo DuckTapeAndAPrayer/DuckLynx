@@ -1,5 +1,3 @@
 Content in the 'info' directory is licensed under the Creative Commons Zero v1.0 Universal license. The content of which can be found in 'LICENSES/CC0-1.0.txt'
 
-Content in the 'pcb' directory unless otherwise noted is licensed under the CERN Open Hardware License Version 2 - Permissive. The content of which can be found in 'LICENSES/CERN-OHL-P-2.0.txt'
-
-Content in the 'firmware', 'DuckUpdate' and 'pcb/pcb scripts' directories are licensed under the GNU Public License Version 3. The content of which can be found in 'LICENSES/GPL-3.0-only.txt'
+Content in the 'firmware' and 'DuckUpdate' directories are licensed under the GNU Public License Version 3. The content of which can be found in 'LICENSES/GPL-3.0-only.txt'
