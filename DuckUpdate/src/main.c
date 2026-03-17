@@ -361,7 +361,7 @@ Actions:\n\
 Write and Flash options:\n\
     -a=<address> --address=<address>. Address to write to\n\
     \n\
-Provided addresses should be in the format 0x<addr> from 0x00000000 to 0xFFFFFFFF. The hex character must be uppercase. If they are outside the allowable range a NAK will be received from the MCU and reported.\n"
+Provided addresses should be in the format 0x<addr> from 0x00000000 to 0xFFFFFFFF. The hex digit characters must be uppercase. If they are outside the allowable range a NAK will be received from the MCU and reported.\n"
     );
 }
 
@@ -422,7 +422,7 @@ int stringToHex(const char * s, uint32_t * value) {
 }
 
 int main(int argc, char **argv) {
-    puts("DuckUpdate Copyright (C) 2025 Bryn 'bakl' Hakl");
+    puts("DuckUpdate Copyright (C) 2026 Bryn 'bakl' Hakl");
     if(argc == 0) {
         // Never should happen
         puts("ERROR: argc == 0");
@@ -449,7 +449,7 @@ int main(int argc, char **argv) {
     } else if (strcmp(actionStr, "write") == 0) {
         action = ACTION_WRITE;
         
-    } else if (strcmp(actionStr, "Run") == 0) {
+    } else if (strcmp(actionStr, "run") == 0) {
         action = ACTION_RUN;
         
     } else if (strcmp(actionStr, "flash") == 0) {
@@ -578,7 +578,6 @@ int main(int argc, char **argv) {
     puts("FTDI open succeeded");
 
     // puts("Setting baudrate");
-    //Baud rate is divided by four because if bitbang mode is on libftdi1 multiplies the given baud rate by four.
     // For the Lynx MCU the max baud rate is 500000 because the max baud rate is the clock / 32 and the bootloader 
     // clock of 16 MHz / 32 = 500000. We run at 490000 to have some margin in case the clock in the MCU is a bit slow
     //ADD: Option to set baudrate
@@ -626,7 +625,7 @@ int main(int argc, char **argv) {
 
         sleepMS(50);
 
-        //Disable bitbang mode because it messes up the baud rate and this is easier than doing math 
+        //Disable bitbang mode because it messes up the baud rate and this is easier than doing math. If bitbang mode is on libftdi1 multiplies the given baud rate by four.
         // f = ftdi_set_bitmode(ftdi, 0, BITMODE_RESET);
         f = ftdi_disable_bitbang(ftdi);
         if (f < 0) {
